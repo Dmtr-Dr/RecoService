@@ -96,7 +96,7 @@ python main.py
 ### Способ 2: Uvicorn
 
 ```
-uvicorn main:app --reload
+uvicorn main:app
 ```
 
 Очень похож на предыдущий, только запуск идет напрямую.
@@ -104,9 +104,6 @@ uvicorn main:app --reload
 
 Обратите внимание: для запуска нужно использовать `uvicorn` из окружения проекта.
 
-```
-cloudflared tunnel --url http://localhost:8000
-```
 
 ### Способ 3: Gunicorn
 
