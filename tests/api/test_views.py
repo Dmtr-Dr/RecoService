@@ -20,7 +20,7 @@ def test_get_reco_success(
     service_config: ServiceConfig,
 ) -> None:
     user_id = 123
-    path = GET_RECO_PATH.format(model_name="some_model", user_id=user_id)
+    path = GET_RECO_PATH.format(model_name="top", user_id=user_id)
     headers = {"Authorization": f"Bearer {'admin'}"}
     with client:
         response = client.get(path, headers=headers)
@@ -35,7 +35,7 @@ def test_get_reco_for_unknown_user(
     client: TestClient,
 ) -> None:
     user_id = 10**10
-    path = GET_RECO_PATH.format(model_name="some_model", user_id=user_id)
+    path = GET_RECO_PATH.format(model_name="top", user_id=user_id)
     headers = {"Authorization": f"Bearer {'admin'}"}
     with client:
         response = client.get(path, headers=headers)
@@ -63,7 +63,7 @@ def test_get_reco_with_invalid_token(
 ) -> None:
     user_id = 123
     invalid_token = "invalid_token"
-    path = GET_RECO_PATH.format(model_name="some_model", user_id=user_id)
+    path = GET_RECO_PATH.format(model_name="top", user_id=user_id)
     headers = {"Authorization": f"Bearer {invalid_token}"}
     with client:
         response = client.get(path, headers=headers)
