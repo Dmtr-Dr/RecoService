@@ -6,8 +6,9 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
-from service.log import app_logger
 from service.api.my_models import user_knn_model
+from service.log import app_logger
+
 
 class RecoResponse(BaseModel):
     user_id: int
@@ -73,7 +74,7 @@ async def get_reco(
         reco = list(range(k_recs))
     elif model_name == "random":
         reco = list(random.sample(range(1001), k_recs))
-    elif model_name == "user_knn": 
+    elif model_name == "user_knn":
         reco = user_knn_model(user_id)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
