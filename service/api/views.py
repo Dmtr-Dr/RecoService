@@ -10,23 +10,23 @@ from service.api.my_models import als_model, autoencoder_model, lightfm_model, r
 from service.log import app_logger
 
 
-def get_user_knn_recs(user_id):
+def get_user_knn_recs(user_id: int):
     return user_knn_model(user_id)
 
 
-def get_als_recs(user_id):
+def get_als_recs(user_id: int):
     return als_model(user_id)
 
 
-def get_lightfm_recs(user_id):
+def get_lightfm_recs(user_id: int):
     return lightfm_model(user_id)
 
 
-def get_autoencoder_recs(user_id):
+def get_autoencoder_recs(user_id: int):
     return autoencoder_model(user_id)
 
 
-def get_recbole_recs(user_id):
+def get_recbole_recs(user_id: int):
     return recbole_model(user_id)
 
 
@@ -89,11 +89,11 @@ async def get_reco(
     k_recs = request.app.state.k_recs
 
     model_functions = {
-        "user_knn": get_user_knn_recs,
-        "als": get_als_recs,
-        "lightfm": get_lightfm_recs,
-        "autoencoder_2l_1024_512": get_autoencoder_recs,
-        "RecVAE": get_recbole_recs}
+        "user_knn": get_user_knn_recs(),
+        "als": get_als_recs(),
+        "lightfm": get_lightfm_recs(),
+        "autoencoder_2l_1024_512": get_autoencoder_recs(),
+        "RecVAE": get_recbole_recs()}
 
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
