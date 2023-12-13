@@ -93,9 +93,7 @@ async def get_reco(
         "als": get_als_recs,
         "lightfm": get_lightfm_recs,
         "autoencoder_2l_1024_512": get_autoencoder_recs,
-        "RecVAE": get_recbole_recs,
-    }
-
+        "RecVAE": get_recbole_recs}
 
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
