@@ -102,7 +102,7 @@ async def get_reco(
     elif model_name == "random":
         reco = list(random.sample(range(1001), k_recs))
     elif model_name in model_functions:
-        reco =  model_functions[model_name](user_id)
+        reco =  model_functions[model_name]
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
