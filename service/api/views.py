@@ -13,17 +13,22 @@ from service.log import app_logger
 def get_user_knn_recs(user_id):
     return user_knn_model(user_id)
 
+
 def get_als_recs(user_id):
     return als_model(user_id)
+
 
 def get_lightfm_recs(user_id):
     return lightfm_model(user_id)
 
+
 def get_autoencoder_recs(user_id):
     return autoencoder_model(user_id)
 
+
 def get_recbole_recs(user_id):
     return recbole_model(user_id)
+
 
 model_functions = {
     "user_knn": get_user_knn_recs,
@@ -104,5 +109,7 @@ async def get_reco(
 
     return RecoResponse(user_id=user_id, items=reco)
 
+
 def add_views(app: FastAPI) -> None:
     app.include_router(router)
+    
