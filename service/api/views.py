@@ -38,6 +38,7 @@ model_functions = {
     "RecVAE": get_recbole_recs,
 }
 
+
 class RecoResponse(BaseModel):
     user_id: int
     items: List[int]
@@ -112,4 +113,3 @@ async def get_reco(
 
 def add_views(app: FastAPI) -> None:
     app.include_router(router)
-    
