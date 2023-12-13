@@ -30,15 +30,6 @@ def get_recbole_recs(user_id):
     return recbole_model(user_id)
 
 
-model_functions = {
-    "user_knn": get_user_knn_recs,
-    "als": get_als_recs,
-    "lightfm": get_lightfm_recs,
-    "autoencoder_2l_1024_512": get_autoencoder_recs,
-    "RecVAE": get_recbole_recs,
-}
-
-
 class RecoResponse(BaseModel):
     user_id: int
     items: List[int]
@@ -96,6 +87,15 @@ async def get_reco(
         raise AuthorizationError(error_message="Authorization failed")
 
     k_recs = request.app.state.k_recs
+
+    model_functions = {
+        "user_knn": get_user_knn_recs,
+        "als": get_als_recs,
+        "lightfm": get_lightfm_recs,
+        "autoencoder_2l_1024_512": get_autoencoder_recs,
+        "RecVAE": get_recbole_recs,
+    }
+
 
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
