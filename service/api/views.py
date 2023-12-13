@@ -89,11 +89,11 @@ async def get_reco(
     k_recs = request.app.state.k_recs
 
     model_functions = {
-        "user_knn": get_user_knn_recs(),
-        "als": get_als_recs(),
-        "lightfm": get_lightfm_recs(),
-        "autoencoder_2l_1024_512": get_autoencoder_recs(),
-        "RecVAE": get_recbole_recs()}
+        "user_knn": get_user_knn_recs(user_id),
+        "als": get_als_recs(user_id),
+        "lightfm": get_lightfm_recs(user_id),
+        "autoencoder_2l_1024_512": get_autoencoder_recs(user_id),
+        "RecVAE": get_recbole_recs(user_id)}
 
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
@@ -102,7 +102,7 @@ async def get_reco(
     elif model_name == "random":
         reco = list(random.sample(range(1001), k_recs))
     elif model_name in model_functions:
-        return model_functions[model_name](user_id)
+        reco =  model_functions[model_name](user_id)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
