@@ -1,12 +1,11 @@
+import random
 from typing import List
 
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
+from fastapi import APIRouter, Depends, FastAPI, Request
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
-import random
-import numpy as np
 
-from service.api.exceptions import UserNotFoundError, ModelNotFoundError,AuthorizationError
+from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.log import app_logger
 
 
@@ -19,17 +18,21 @@ router = APIRouter()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin")
 
+
 @router.get(
     path="/health",
     tags=["Health"],
     responses={
-        200: {"description": "Health check successful",
-              "content": {"application/json": {"example": {"status": "36.6"}}}},
-        500: {"description": "Internal Server Error",
-              "content": {"application/json": {"example": {"error": "Internal Server Error"}}}},
-    }
+        200: {
+            "description": "Health check successful",
+            "content": {"application/json": {"example": {"status": "36.6"}}},
+        },
+        500: {
+            "description": "Internal Server Error",
+            "content": {"application/json": {"example": {"error": "Internal Server Error"}}},
+        },
+    },
 )
-
 async def health() -> str:
     return "I am alive"
 
@@ -39,17 +42,17 @@ async def health() -> str:
     tags=["Recommendations"],
     response_model=RecoResponse,
     responses={
-        200: {"description": "Success",
-              "content": {"application/json": {"example": {"user_id": 1, "items": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}}}},
-        401: {"description": "Unauthorized",
-              "content": {"application/json": {"example": {"error": "Unauthorized"}}}},
-        403: {"description": "Forbidden",
-              "content": {"application/json": {"example": {"error": "Forbidden"}}}},
-        404: {"description": "Not Found",
-              "content": {"application/json": {"example": {"error": "Not Found"}}}},
-        500: {"description": "Internal Server Error",
-              "content": {"application/json": {"example": {"error": "Internal Server Error"}}}},
-    }
+        200: {
+            "description": "Success",
+            "content": {"application/json": {"example": {"user_id": 1, "items": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}}},
+        },
+        401: {"description": "Unauthorized", "content": {"application/json": {"example": {"error": "Unauthorized"}}}},
+        404: {"description": "Not Found", "content": {"application/json": {"example": {"error": "Not Found"}}}},
+        500: {
+            "description": "Internal Server Error",
+            "content": {"application/json": {"example": {"error": "Internal Server Error"}}},
+        },
+    },
 )
 async def get_reco(
     request: Request,
@@ -72,9 +75,7 @@ async def get_reco(
         reco = list(random.sample(range(1001), k_recs))
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
-        
-        
-    k_recs = request.app.state.k_recs
+
     return RecoResponse(user_id=user_id, items=reco)
 
 
