@@ -155,4 +155,3 @@ def ranker_model(user_id: int):
     else:
         user_recommendations = popular_recos[:10]
     return user_recommendations
-    
