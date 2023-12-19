@@ -37,7 +37,6 @@ if os.path.exists(PATH):
     recbole_recos = pd.read_csv(PATH)
     unique_users_recbole = recbole_recos["user_id"].unique()
 
-
 popular_recos = pd.DataFrame()
 PATH2 = "recos/popular.csv"
 if os.path.exists(PATH2):
@@ -131,3 +130,4 @@ def recbole_model(user_id: int):
     else:
         user_recommendations = popular_recos[:10]
     return user_recommendations
+  
