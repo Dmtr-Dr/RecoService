@@ -37,6 +37,7 @@ if os.path.exists(PATH):
     recbole_recos = pd.read_csv(PATH)
     unique_users_recbole = recbole_recos["user_id"].unique()
 
+
 popular_recos = pd.DataFrame()
 PATH2 = "recos/popular.csv"
 if os.path.exists(PATH2):
