@@ -6,7 +6,16 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
-from service.api.my_models import als_model, autoencoder_model, lightfm_model, recbole_model, user_knn_model
+
+from service.api.my_models import (
+    als_model,
+    autoencoder_model,
+    lightfm_model,
+    ranker_model,
+    recbole_model,
+    user_knn_model,
+)
+
 from service.log import app_logger
 
 
@@ -28,6 +37,10 @@ def get_autoencoder_recs(user_id: int):
 
 def get_recbole_recs(user_id: int):
     return recbole_model(user_id)
+
+
+def get_ranker_recs(user_id: int):
+    return ranker_model(user_id)
 
 
 class RecoResponse(BaseModel):
@@ -93,7 +106,9 @@ async def get_reco(
         "als": get_als_recs(user_id),
         "lightfm": get_lightfm_recs(user_id),
         "autoencoder_2l_1024_512": get_autoencoder_recs(user_id),
-        "RecVAE": get_recbole_recs(user_id)}
+        "RecVAE": get_recbole_recs(user_id),
+        "Ranker_lgbm": get_ranker_recs(user_id),
+    }
 
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
