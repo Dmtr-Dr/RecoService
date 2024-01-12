@@ -6,8 +6,28 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
-from service.api.my_models import als_model, lightfm_model, user_knn_model
+from service.api.my_models import als_model, autoencoder_model, lightfm_model, recbole_model, user_knn_model
 from service.log import app_logger
+
+
+def get_user_knn_recs(user_id: int):
+    return user_knn_model(user_id)
+
+
+def get_als_recs(user_id: int):
+    return als_model(user_id)
+
+
+def get_lightfm_recs(user_id: int):
+    return lightfm_model(user_id)
+
+
+def get_autoencoder_recs(user_id: int):
+    return autoencoder_model(user_id)
+
+
+def get_recbole_recs(user_id: int):
+    return recbole_model(user_id)
 
 
 class RecoResponse(BaseModel):
@@ -68,18 +88,21 @@ async def get_reco(
 
     k_recs = request.app.state.k_recs
 
+    model_functions = {
+        "user_knn": get_user_knn_recs(user_id),
+        "als": get_als_recs(user_id),
+        "lightfm": get_lightfm_recs(user_id),
+        "autoencoder_2l_1024_512": get_autoencoder_recs(user_id),
+        "RecVAE": get_recbole_recs(user_id)}
+
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
     if model_name == "top":
         reco = list(range(k_recs))
     elif model_name == "random":
         reco = list(random.sample(range(1001), k_recs))
-    elif model_name == "user_knn":
-        reco = user_knn_model(user_id)
-    elif model_name == "als":
-        reco = als_model(user_id)
-    elif model_name == "lightfm":
-        reco = lightfm_model(user_id)
+    elif model_name in model_functions:
+        reco = model_functions[model_name]
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
