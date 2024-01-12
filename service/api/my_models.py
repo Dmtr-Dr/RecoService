@@ -37,6 +37,7 @@ if os.path.exists(PATH):
     recbole_recos = pd.read_csv(PATH)
     unique_users_recbole = recbole_recos["user_id"].unique()
 
+
 ranker_recos = pd.DataFrame()
 unique_users_ranker = []
 PATH = "recos/ranker_recos.csv"
@@ -99,6 +100,7 @@ def lightfm_model(user_id: int):
                 num_popular_recos = 10 - len(user_recommendations)
                 popular_recos_subset = [item for item in popular_recos if item not in user_recommendations]
                 user_recommendations = user_recommendations + popular_recos_subset[:num_popular_recos]
+
         else:
             user_recommendations = popular_recos[:10]  # Вернуть первые 10 популярных рекомендаций
     else:
@@ -143,6 +145,43 @@ def recbole_model(user_id: int):
 def ranker_model(user_id: int):
     if user_id in unique_users_ranker:
         user_recommendations = ranker_recos[ranker_recos["user_id"] == user_id]["item_id"].to_list()
+        if user_recommendations:
+            if len(user_recommendations) >= 10:
+                user_recommendations = user_recommendations[:10]  # Вернуть первые 10 рекомендаций
+            else:
+                num_popular_recos = 10 - len(user_recommendations)
+                popular_recos_subset = [item for item in popular_recos if item not in user_recommendations]
+                user_recommendations = user_recommendations + popular_recos_subset[:num_popular_recos]
+
+                
+        else:
+            user_recommendations = popular_recos[:10]  # Вернуть первые 10 популярных рекомендаций
+    else:
+        user_recommendations = popular_recos[:10]
+    return user_recommendations
+
+
+
+def autoencoder_model(user_id: int):
+    if user_id in unique_users_autoencoder:
+        user_recommendations = autoencoder_recos[autoencoder_recos["user_id"] == user_id]["item_id"].to_list()
+        if user_recommendations:
+            if len(user_recommendations) >= 10:
+                user_recommendations = user_recommendations[:10]  # Вернуть первые 10 рекомендаций
+            else:
+                num_popular_recos = 10 - len(user_recommendations)
+                popular_recos_subset = [item for item in popular_recos if item not in user_recommendations]
+                user_recommendations = user_recommendations + popular_recos_subset[:num_popular_recos]
+        else:
+            user_recommendations = popular_recos[:10]  # Вернуть первые 10 популярных рекомендаций
+    else:
+        user_recommendations = popular_recos[:10]
+    return user_recommendations
+
+
+def recbole_model(user_id: int):
+    if user_id in unique_users_recbole:
+        user_recommendations = recbole_recos[recbole_recos["user_id"] == user_id]["item_id"].to_list()
         if user_recommendations:
             if len(user_recommendations) >= 10:
                 user_recommendations = user_recommendations[:10]  # Вернуть первые 10 рекомендаций

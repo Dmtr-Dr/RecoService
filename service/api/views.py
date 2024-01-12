@@ -6,6 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
+
 from service.api.my_models import (
     als_model,
     autoencoder_model,
@@ -14,6 +15,7 @@ from service.api.my_models import (
     recbole_model,
     user_knn_model,
 )
+
 from service.log import app_logger
 
 
